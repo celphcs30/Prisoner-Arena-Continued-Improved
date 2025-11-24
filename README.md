@@ -61,7 +61,7 @@ Place the `PrisonerArena` folder in your RimWorld `Mods` directory.
 
 - **Original Mod**: Gl0b
 - **Continued by**: Mlie (emipa606)
-- **Performance Fixes**: celph30
+- **Performance Fixes**: celphcs30
 
 ## License
 
