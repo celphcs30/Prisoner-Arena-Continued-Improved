@@ -1,4 +1,4 @@
-# Prisoner Arena (Continued)
+# Prisoner Arena (Continued) Improved
 
 RimWorld mod that allows you to arrange fights between prisoners, with spectators gaining joy from watching the matches.
 
