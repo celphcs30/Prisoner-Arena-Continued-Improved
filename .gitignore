@@ -234,3 +234,7 @@ $RECYCLE.BIN/
 # Rimworld specific
 _PublisherPlus.xml
 lastrun.log
+
+# Keep compiled DLLs in version folders (needed for mod distribution)
+# Explicitly include DLLs in Assemblies folders
+!**/Assemblies/*.dll
