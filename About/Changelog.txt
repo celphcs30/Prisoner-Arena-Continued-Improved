@@ -1,6 +1,12 @@
-# Changelog for PrisonerArena
+# Changelog for Prisoner Arena (Continued) - Upgraded
 
-1.6.0 - Mod updated for 1.6 and passed autotests
+1.6.0 - RimWorld 1.6 support only
+- Fixed critical performance issues: game lockup when selecting Arena Spot buildings
+- Implemented caching system for overlay calculations (only recalculates when settings change)
+- Optimized cell lookups using HashSet for O(1) complexity instead of O(n)
+- Eliminated per-frame memory allocations
+- Removed support for RimWorld 1.0-1.5 (1.6 only)
+- Updated mod name to "Prisoner Arena (Continued) - Upgraded" for consistency
 
 
 1.5.4 - Animals should not try to pick up weapons in a fight
