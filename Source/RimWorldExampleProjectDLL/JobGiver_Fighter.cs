@@ -20,11 +20,29 @@ public class JobGiver_Fighter : JobGiver_AIFightEnemy
     protected override Job TryGiveJob(Pawn pawn)
     {
         var state = (MentalState_Fighter)pawn.MentalState;
+        if (state == null)
+        {
+            return null;
+        }
+
         var pawnTarget = state.otherPawn;
         var bellRef = state.bellRef;
-        var fighterTarget = bellRef.GetFighter(pawnTarget);
+        if (bellRef == null || pawnTarget == null)
+        {
+            return null;
+        }
 
-        if (!fighterTarget.isInFight || Rand.Value < WaitChance)
+        var currentFighter = bellRef.GetFighter(pawn);
+        if (currentFighter == null || !currentFighter.isInFight)
+        {
+            return new Job(JobDefOf.Wait_Combat)
+            {
+                expiryInterval = 10
+            };
+        }
+
+        // Small random wait chance to prevent both fighters attacking at exact same time
+        if (Rand.Value < WaitChance)
         {
             return new Job(JobDefOf.Wait_Combat)
             {
