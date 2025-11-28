@@ -32,11 +32,36 @@ public class JobGiver_Fighter : JobGiver_AIFightEnemy
             };
         }
 
-        if (pawn.TryGetAttackVerb(null) == null)
+        // Hard incapability gate
+        if (pawn.Dead || pawn.Downed || pawn.WorkTagIsDisabled(WorkTags.Violent))
         {
             return null;
         }
 
+        // Get target as Thing for verb checks
+        Thing targetThing = (pawnTarget != null && pawnTarget.Spawned) ? pawnTarget : null;
+
+        // 1) Melee (includes fists/body tools and melee weapons)
+        Verb meleeVerb = null;
+        bool canFightMelee = false;
+        if (targetThing != null)
+        {
+            meleeVerb = pawn.meleeVerbs?.TryGetMeleeVerb(targetThing);
+            canFightMelee = meleeVerb != null;
+        }
+
+        // 2) Any other usable attack verb for this target (incl. manual cast)
+        var allowManualCastWeapons = !pawn.IsColonist;
+        Verb attackVerb = null;
+        bool canFightRanged = false;
+        if (targetThing != null)
+        {
+            attackVerb = pawn.TryGetAttackVerb(targetThing, allowManualCastWeapons);
+            canFightRanged = attackVerb != null;
+        }
+
+        // Check if pawn needs a weapon (doesn't have one equipped)
+        // This runs regardless of whether they can fight with fists, so they'll still pick up weapons when available
         var primary = pawn.equipment?.Primary;
         if (bellRef.currentState == Building_Bell.State.fight && pawn.equipment != null && primary == null &&
             pawn.RaceProps?.Animal == false)
@@ -74,6 +99,16 @@ public class JobGiver_Fighter : JobGiver_AIFightEnemy
             }
         }
 
+        // If we can't fight at all (no fists, no ranged, and no weapon available), return null
+        if (!canFightMelee && !canFightRanged)
+        {
+            return null;
+        }
+
+        // If we have melee capability (fists), we can fight - continue to job assignment
+        // If we have ranged capability, we can fight - continue to job assignment
+        // Weapon pickup was attempted above if no weapon was equipped
+
         if (pawnTarget == null || !pawn.CanReach(pawnTarget, PathEndMode.ClosestTouch, Danger.Deadly))
         {
             return new Job(JobDefOf.Wait);
@@ -89,11 +124,19 @@ public class JobGiver_Fighter : JobGiver_AIFightEnemy
             return null;
         }
 
-        var allowManualCastWeapons = !pawn.IsColonist;
-        var verb = pawn.TryGetAttackVerb(enemyTarget, allowManualCastWeapons);
+        // Use the verb we already checked, or get it again with the target
+        var verb = attackVerb ?? pawn.TryGetAttackVerb(enemyTarget, allowManualCastWeapons);
         if (verb == null)
         {
-            return null;
+            // Fallback: try melee verb if attack verb failed
+            if (meleeVerb != null)
+            {
+                verb = meleeVerb;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         var isMeleeAttack = verb.verbProps.IsMeleeAttack;
