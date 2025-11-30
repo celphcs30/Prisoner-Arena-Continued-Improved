@@ -45,11 +45,20 @@ public class WorkGiver_HandleFight : WorkGiver_Scanner
             case Building_Bell.State.rest:
                 return false;
             case Building_Bell.State.scheduled:
+                if (building.fighter1.p == null || building.fighter2.p == null)
+                {
+                    return false;
+                }
                 return pawn.CanReserve(building.fighter1.p, 1, -1, null, forced) &&
                        pawn.CanReserve(building.fighter2.p, 1, -1, null, forced);
         }
 
         if (building.fighter1.isInFight)
+        {
+            return false;
+        }
+
+        if (building.fighter1.p == null || building.fighter2.p == null)
         {
             return false;
         }

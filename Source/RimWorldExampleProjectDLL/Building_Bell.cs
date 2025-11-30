@@ -51,7 +51,7 @@ public class Building_Bell : Building //, IBillGiver
         Scribe_Values.Look(ref currentState, "currentState");
         Scribe_References.Look(ref fighter1.p, "fighter1p");
         Scribe_References.Look(ref fighter2.p, "fighter2p");
-        Scribe_Values.Look(ref fighter1.isInFight, "fighter2f");
+        Scribe_Values.Look(ref fighter1.isInFight, "fighter1f");
         Scribe_Values.Look(ref fighter2.isInFight, "fighter2f");
         Scribe_Values.Look(ref toDeath, "toDeath");
         Scribe_Values.Look(ref winnerGetsFreedom, "winnerGetsFreedom");

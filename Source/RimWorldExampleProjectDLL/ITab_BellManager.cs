@@ -164,7 +164,7 @@ internal class ITab_BellManager : ITab
     {
         if (index == 0)
         {
-            if (bell.fighter1.p != null)
+            if (bell.fighter1.p != null && bell.fighter1.p.Name != null)
             {
                 return bell.fighter1.p.Name.ToStringShort;
             }
@@ -175,7 +175,7 @@ internal class ITab_BellManager : ITab
             return "PA.Select".Translate();
         }
 
-        if (bell.fighter2.p != null)
+        if (bell.fighter2.p != null && bell.fighter2.p.Name != null)
         {
             return bell.fighter2.p.Name.ToStringShort;
         }

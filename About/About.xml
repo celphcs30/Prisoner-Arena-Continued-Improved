@@ -41,6 +41,8 @@ This version includes critical performance fixes:
 [*] Implemented caching system for overlay calculations (only recalculates when settings change)
 [*] Optimized cell lookups using HashSet for O(1) complexity instead of O(n)
 [*] Eliminated per-frame memory allocations
+[*] Fixed crash/freeze when selecting colonists as fighters (null reference exceptions)
+[*] Fixed save/load bug where both fighters used the same save key
 [/list]
 
 [h1]Credits &amp; History[/h1]

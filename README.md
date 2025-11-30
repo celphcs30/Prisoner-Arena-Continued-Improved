@@ -32,10 +32,18 @@ This version includes critical performance fixes that resolve game lockup issues
    - **Problem**: Created large arrays from `CellRect.Cells` enumerables every frame, causing memory pressure and GC spikes.
    - **Solution**: Eliminated per-frame allocations by caching results and using HashSet for efficient lookups.
 
+5. **Null Reference Exceptions with Colonists**
+   - **Problem**: When selecting colonists as fighters, the work giver and UI code accessed fighter pawns without null checks, causing game crashes/freezes.
+   - **Solution**: Added comprehensive null checks in `WorkGiver_HandleFight`, `FighterLabel` methods, and related UI code.
+
+6. **Save/Load Data Corruption**
+   - **Problem**: Both fighters used the same save key (`"fighter2f"`), causing data corruption when loading saves.
+   - **Solution**: Fixed to use unique save keys (`"fighter1f"` and `"fighter2f"`).
+
 ### Performance Impact
 
-- **Before**: Complete game lockup when selecting Arena Spot buildings, especially on larger maps
-- **After**: Smooth performance with overlay calculations only occurring when settings change
+- **Before**: Complete game lockup when selecting Arena Spot buildings, especially on larger maps. Game crashes/freezes when selecting colonists as fighters.
+- **After**: Smooth performance with overlay calculations only occurring when settings change. Colonists can now be safely selected as fighters without crashes.
 
 ## Features
 

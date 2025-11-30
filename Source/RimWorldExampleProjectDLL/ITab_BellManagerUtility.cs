@@ -19,20 +19,34 @@ internal class ITab_BellManagerUtility
             {
                 case 0:
                 {
-                    result = bell.fighter1.p.Name.ToStringShort;
-                    if (bell.fighter1.p.AnimalOrWildMan())
+                    if (bell.fighter1.p != null && bell.fighter1.p.Name != null)
                     {
-                        result += $" ({bell.fighter1.p.def.race.AnyPawnKind.label})";
+                        result = bell.fighter1.p.Name.ToStringShort;
+                        if (bell.fighter1.p.AnimalOrWildMan())
+                        {
+                            result += $" ({bell.fighter1.p.def.race.AnyPawnKind.label})";
+                        }
+                    }
+                    else
+                    {
+                        result = "PA.Select".Translate();
                     }
 
                     break;
                 }
                 case 1:
                 {
-                    result = bell.fighter2.p.Name.ToStringShort;
-                    if (bell.fighter2.p.AnimalOrWildMan())
+                    if (bell.fighter2.p != null && bell.fighter2.p.Name != null)
                     {
-                        result += $" ({bell.fighter2.p.def.race.AnyPawnKind.label})";
+                        result = bell.fighter2.p.Name.ToStringShort;
+                        if (bell.fighter2.p.AnimalOrWildMan())
+                        {
+                            result += $" ({bell.fighter2.p.def.race.AnyPawnKind.label})";
+                        }
+                    }
+                    else
+                    {
+                        result = "PA.Select".Translate();
                     }
 
                     break;
