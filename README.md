@@ -40,10 +40,18 @@ This version includes critical performance fixes that resolve game lockup issues
    - **Problem**: Both fighters used the same save key (`"fighter2f"`), causing data corruption when loading saves.
    - **Solution**: Fixed to use unique save keys (`"fighter1f"` and `"fighter2f"`).
 
+7. **Work Giver Assigning Jobs to Fighters**
+   - **Problem**: When colonists were selected as fighters, the work giver would try to assign haul jobs to the fighters themselves, causing them to attempt to reserve/haul themselves and resulting in game freezes.
+   - **Solution**: Added checks in `WorkGiver_HandleFight` to prevent assigning haul jobs to pawns who are fighters, and added null checks to prevent self-hauling scenarios.
+
+8. **Null Reference Exceptions in Fight Initialization**
+   - **Problem**: When prisoners were delivered to the arena, the code accessed fighter properties without null checks, causing crashes if fighter references were invalid.
+   - **Solution**: Added comprehensive null checks in `PrisonerDelivered`, `startFightingState`, `getOtherFighter`, and `GetPrisonerForHaul` methods.
+
 ### Performance Impact
 
-- **Before**: Complete game lockup when selecting Arena Spot buildings, especially on larger maps. Game crashes/freezes when selecting colonists as fighters.
-- **After**: Smooth performance with overlay calculations only occurring when settings change. Colonists can now be safely selected as fighters without crashes.
+- **Before**: Complete game lockup when selecting Arena Spot buildings, especially on larger maps. Game crashes/freezes when selecting colonists as fighters. Game freezes when scheduling fights with colonists.
+- **After**: Smooth performance with overlay calculations only occurring when settings change. Colonists can now be safely selected as fighters and fights can be scheduled without crashes or freezes.
 
 ## Features
 
@@ -54,6 +62,14 @@ This version includes critical performance fixes that resolve game lockup issues
 - Spectators gain joy from watching matches
 - Configurable arena radius and spectator buffer zones
 - Support for both square and circular arena shapes
+
+## How It Works
+
+1. Select two fighters from the Arena Spot menu (can be prisoners, colonists, slaves, animals, mechs, or mutants)
+2. Schedule the fight
+3. Any undrafted pawn capable of wardening will automatically haul the fighters to the arena
+4. **Important**: Drafted pawns cannot haul fighters (they don't take work giver jobs). If all potential haulers are drafted, the fight won't start until someone is undrafted.
+5. Fighters cannot haul themselves - other pawns must do the hauling
 
 ## Installation
 

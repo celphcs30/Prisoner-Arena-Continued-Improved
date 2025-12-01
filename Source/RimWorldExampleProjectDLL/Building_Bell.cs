@@ -112,20 +112,29 @@ public class Building_Bell : Building //, IBillGiver
 
     private void startFightingState(Fighter f)
     {
-        f.p.mindState.enemyTarget = getOtherFighter(f).p;
+        if (f == null || f.p == null)
+        {
+            return;
+        }
+
+        var otherFighter = getOtherFighter(f);
+        if (otherFighter == null || otherFighter.p == null)
+        {
+            return;
+        }
+
+        f.p.mindState.enemyTarget = otherFighter.p;
         f.p.jobs.StopAll();
         f.p.mindState.mentalStateHandler.Reset();
         var mentalStateHandler = f.p.mindState.mentalStateHandler;
         var ArenaFighting = MentalStateDefOfArena.Fighter;
-        _ = f.p;
-        _ = getOtherFighter(f).p;
         mentalStateHandler.TryStartMentalState(ArenaFighting, "", false, false, false, null, true);
         if (f.p.MentalState is not MentalState_Fighter mentalState)
         {
             return;
         }
 
-        mentalState.otherPawn = getOtherFighter(f).p;
+        mentalState.otherPawn = otherFighter.p;
         mentalState.bellRef = this;
     }
 
@@ -199,8 +208,14 @@ public class Building_Bell : Building //, IBillGiver
 
     public void PrisonerDelivered(Pawn p)
     {
-        GetFighter(p).isInFight = true;
-        startFightingState(GetFighter(p));
+        var fighter = GetFighter(p);
+        if (fighter == null || fighter.p == null)
+        {
+            return;
+        }
+
+        fighter.isInFight = true;
+        startFightingState(fighter);
         if (!(fighter1.isInFight && fighter2.isInFight))
         {
             return;
@@ -282,12 +297,26 @@ public class Building_Bell : Building //, IBillGiver
 
     public Pawn GetPrisonerForHaul()
     {
-        var p = !fighter1.isInFight ? fighter1.p : fighter2.p;
-        return p;
+        if (!fighter1.isInFight && fighter1.p != null)
+        {
+            return fighter1.p;
+        }
+
+        if (fighter2.p != null)
+        {
+            return fighter2.p;
+        }
+
+        return null;
     }
 
     private Fighter getOtherFighter(Fighter f)
     {
+        if (f == null || f.p == null)
+        {
+            return null;
+        }
+
         var result = f.p == fighter1.p ? fighter2 : fighter1;
         return result;
     }

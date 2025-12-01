@@ -88,7 +88,13 @@ public class JobDriver_HaulPrisoner : JobDriver
                     return;
                 }
 
-                var carryPrisonerJob = new Job(JobDefOfArena.HaulingPrisoner, BellRef.GetPrisonerForHaul(), BellRef,
+                var nextPrisoner = BellRef.GetPrisonerForHaul();
+                if (nextPrisoner == null)
+                {
+                    return;
+                }
+
+                var carryPrisonerJob = new Job(JobDefOfArena.HaulingPrisoner, nextPrisoner, BellRef,
                     BellRef.GetFighterStandPoint())
                 {
                     count = 1

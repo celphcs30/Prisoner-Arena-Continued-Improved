@@ -30,6 +30,13 @@ Arrange fights between your prisoners, slaves, animals, mechs, and mutants. Spec
 [h1]How does it work[/h1]
 You select two prisoners and start the fight from the arena spot menu. Any pawn capable of wardening will haul the fighters into the fighting area.
 
+[list]
+[*] Fighters can be prisoners, colonists, slaves, animals, mechs, or mutants
+[*] Only undrafted pawns can haul fighters to the arena (drafted pawns don't take work giver jobs)
+[*] If all potential haulers are drafted, the fight won't start until someone is undrafted
+[*] Fighters cannot haul themselves - other pawns must do the hauling
+[/list]
+
 Build it from Misc - Arena Spot
 
 Should be compatible with practically anything. Safe to add to existing colony. Before removing the mod make sure you don't have any arena spots on your map and your prisoners aren't fighting.
@@ -43,6 +50,7 @@ This version includes critical performance fixes:
 [*] Eliminated per-frame memory allocations
 [*] Fixed crash/freeze when selecting colonists as fighters (null reference exceptions)
 [*] Fixed save/load bug where both fighters used the same save key
+[*] Fixed game freeze when scheduling fights with colonists (work giver trying to assign haul jobs to fighters)
 [/list]
 
 [h1]Credits &amp; History[/h1]

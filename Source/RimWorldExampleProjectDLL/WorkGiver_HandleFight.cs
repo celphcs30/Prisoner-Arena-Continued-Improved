@@ -40,6 +40,12 @@ public class WorkGiver_HandleFight : WorkGiver_Scanner
             return false;
         }
 
+        // Don't give haul job to pawns who are fighters themselves
+        if (building.fighter1.p == pawn || building.fighter2.p == pawn)
+        {
+            return false;
+        }
+
         switch (building.currentState)
         {
             case Building_Bell.State.rest:
@@ -79,7 +85,19 @@ public class WorkGiver_HandleFight : WorkGiver_Scanner
 
         if (t is Building_Bell bell)
         {
-            return new Job(JobDefOfArena.HaulingPrisoner, bell.GetPrisonerForHaul(), bell,
+            // Don't give haul job to pawns who are fighters themselves
+            if (bell.fighter1.p == pawn || bell.fighter2.p == pawn)
+            {
+                return null;
+            }
+
+            var prisonerToHaul = bell.GetPrisonerForHaul();
+            if (prisonerToHaul == null || prisonerToHaul == pawn)
+            {
+                return null;
+            }
+
+            return new Job(JobDefOfArena.HaulingPrisoner, prisonerToHaul, bell,
                 bell.GetFighterStandPoint())
             {
                 count = 1
